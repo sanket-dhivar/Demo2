@@ -15,22 +15,6 @@ variables:
   storageAccount: testwesteurope123
   container: test-dev
   tfstateFile: terraform.tfstate
-<<<<<<< HEAD
-=======
-- task: TerraformTaskV4@4
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/New folder'
-    backendServiceArm: 'test-devops'
-    backendAzureRmResourceGroupName: 'KE-DevOps-LandingZone'
-    backendAzureRmStorageAccountName: 'testwesteurope123'
-    backendAzureRmContainerName: 'test-dev'
-    backendAzureRmKey: 'RgvUgw78ISrE3tzFSvPRqmtfUEfbnR7d6nRXnIhgw6GbEK92616z93NkyL9OcHxqWIbrSzGNZoda+ASthYh2KQ=='
-- task: TerraformInstaller@1
-  inputs:
-    terraformVersion: 'latest'
->>>>>>> 28c13f55f4101a96db597ebdbe0e0bd3e866565a
   anyTfChanges: false
 
 steps:
@@ -39,7 +23,6 @@ steps:
   displayName: install Terraform v0.12.28
   inputs:
     terraformVersion: '1.4.6'
-<<<<<<< HEAD
 
 - task: TerraformTaskV1@0
   displayName: terraform init
@@ -55,9 +38,6 @@ steps:
 
 - task: TerraformTaskV1@0
   displayName: terraform plan -out=tfplan
-=======
-- task: TerraformTaskV4@4
->>>>>>> 28c13f55f4101a96db597ebdbe0e0bd3e866565a
   inputs:
     provider: 'azurerm'
     command: 'plan'
@@ -89,7 +69,6 @@ steps:
       {
         Write-Host "There is no change detected in Terraform tfplan file"
       }
-<<<<<<< HEAD
 - task: TerraformTaskV1@0
   displayName: terraform apply tfplan
   condition: eq(variables.anyTfChanges, true)
@@ -99,5 +78,3 @@ steps:
     workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
     commandOptions: 'tfplan'
     environmentServiceNameAzureRM: '$(subscription)'
-=======
->>>>>>> 28c13f55f4101a96db597ebdbe0e0bd3e866565a
