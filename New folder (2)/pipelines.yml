@@ -1,3 +1,8 @@
+
+
+# trigger:
+# - master
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -7,9 +12,6 @@ variables:
   storageAccount: testwesteurope123
   container: test-dev
   tfstateFile: terraform.tfstate
-- task: TerraformInstaller@1
-  inputs:
-    terraformVersion: 'latest'
   anyTfChanges: false
 
 steps:
@@ -24,7 +26,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/New folder'
     backendServiceArm: '$(subscription)'
     backendAzureRmResourceGroupName: '$(resourceGroup)'
     backendAzureRmStorageAccountName: '$(storageAccount)'
