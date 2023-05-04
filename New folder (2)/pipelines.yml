@@ -19,10 +19,9 @@ variables:
 
 steps:
 
-- task: TerraformInstaller@0
-  displayName: install Terraform v0.12.28
+- task: TerraformInstaller@1
   inputs:
-    terraformVersion: '1.4.6'
+    terraformVersion: 'latest'
 
 - task: TerraformTaskV1@0
   displayName: terraform init
@@ -53,7 +52,6 @@ steps:
 - task: PowerShell@2
   displayName: detect any terraform change
   inputs:
-    workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
     targetType: 'inline'
     script: |
       # Write-Host "LASTEXITCODE : $LASTEXITCODE"
@@ -69,6 +67,7 @@ steps:
       {
         Write-Host "There is no change detected in Terraform tfplan file"
       }
+    workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
 - task: TerraformTaskV1@0
   displayName: terraform apply tfplan
   condition: eq(variables.anyTfChanges, true)
