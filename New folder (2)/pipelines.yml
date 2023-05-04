@@ -4,10 +4,9 @@
 # - master
 
 pool:
-- task: TerraformInstaller@1
-  inputs:
-    terraformVersion: 'latest'
   vmImage: 'ubuntu-latest'
+
+
 
 variables:
   subscription: Visual Studio Enterprise(690b950d-5162-4bbd-af2d-945889d8a9ad)
@@ -20,7 +19,7 @@ variables:
 steps:
 
 - task: TerraformInstaller@0
-  displayName: install Terraform v0.12.28
+  displayName: install Terraform v1.4.6
   inputs:
     terraformVersion: '1.4.6'
 
