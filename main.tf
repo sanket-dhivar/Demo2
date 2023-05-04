@@ -4,7 +4,7 @@ provider "azurerm"{
 }
 
 data "azurerm_resource_group" "test" {
-  name = "nancyResourceGroup"
+  name = "KE-DevOps-LandingZone"
 }
 
 
