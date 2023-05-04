@@ -1,4 +1,7 @@
 pool:
+- task: TerraformInstaller@1
+  inputs:
+    terraformVersion: 'latest'
   vmImage: 'ubuntu-latest'
 
 variables:
@@ -7,6 +10,16 @@ variables:
   storageAccount: testwesteurope123
   container: test-dev
   tfstateFile: terraform.tfstate
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/New folder'
+    backendServiceArm: 'test-devops'
+    backendAzureRmResourceGroupName: 'KE-DevOps-LandingZone'
+    backendAzureRmStorageAccountName: 'testwesteurope123'
+    backendAzureRmContainerName: 'test-dev'
+    backendAzureRmKey: 'RgvUgw78ISrE3tzFSvPRqmtfUEfbnR7d6nRXnIhgw6GbEK92616z93NkyL9OcHxqWIbrSzGNZoda+ASthYh2KQ=='
 - task: TerraformInstaller@1
   inputs:
     terraformVersion: 'latest'
@@ -18,28 +31,18 @@ steps:
   displayName: install Terraform v0.12.28
   inputs:
     terraformVersion: '1.4.6'
-
-- task: TerraformTaskV1@0
-  displayName: terraform init
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/New folder'
-    backendServiceArm: '$(subscription)'
-    backendAzureRmResourceGroupName: '$(resourceGroup)'
-    backendAzureRmStorageAccountName: '$(storageAccount)'
-    backendAzureRmContainerName: '$(container)'
-    backendAzureRmKey: '$(tfstateFile)'
-
-- task: TerraformTaskV1@0
-  displayName: terraform plan -out=tfplan
+- task: TerraformTaskV4@4
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
-    commandOptions: '-out=tfplan'
-    # commandOptions: '-detailed-exitcode -out=tfplan'
-    environmentServiceNameAzureRM: '$(subscription)'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/New folder'
+    environmentServiceNameAzureRM: 'test-devops'
+
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    environmentServiceNameAzureRM: 'test-devops'
 
 - task: PowerShell@2
   displayName: detect any terraform change
@@ -60,12 +63,3 @@ steps:
       {
         Write-Host "There is no change detected in Terraform tfplan file"
       }
-- task: TerraformTaskV1@0
-  displayName: terraform apply tfplan
-  condition: eq(variables.anyTfChanges, true)
-  inputs:
-    provider: 'azurerm'
-    command: 'apply'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
-    commandOptions: 'tfplan'
-    environmentServiceNameAzureRM: '$(subscription)'
