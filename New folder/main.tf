@@ -12,6 +12,10 @@ provider "azurerm"{
     }
 }
 
+terraform {
+  chdir = "/home/vsts/work/1/s/New folder"
+}
+
 data "azurerm_resource_group" "test" {
   name = "KE-DevOps-LandingZone"
 }
