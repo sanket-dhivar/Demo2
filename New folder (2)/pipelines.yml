@@ -1,79 +1,35 @@
-
-
-# trigger:
-# - master
-
-pool:
-  vmImage: 'ubuntu-latest'
-
-
-
-variables:
-  subscription: Visual Studio Enterprise(690b950d-5162-4bbd-af2d-945889d8a9ad)
-  resourceGroup: KE-DevOps-LandingZone
-  storageAccount: testwesteurope123
-  container: test-dev
-  tfstateFile: terraform.tfstate
-  anyTfChanges: false
+trigger:
+ branches:
+ include:
+ - master
 
 steps:
+- task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+ # inputs:
+ #terraformVersion: '1.4.6' 
 
-- task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-  displayName: install Terraform v1.4.6
-  inputs:
-    terraformVersion: 'latest'
+- task: TerraformTaskV2@2
+ inputs:
+ provider: 'azurerm'
+ command: 'init'
+ backendServiceArm: 'Azure trail'
+ backendAzureRmResourceGroupName: 'KE-DevOps-LandingZone'
+ backendAzureRmStorageAccountName: 'testwesteurope123'
+ backendAzureRmContainerName: 'test-dev'
+ backendAzureRmKey: '77Q4LUB5o9wRdbPYDt+0kGZP+L8Sj9E/FNXg7lZBQS5z3mLod5cyan4wA19CR1SmlqIRUFQfhuQrPVaGzNhjGw=='
 
-- task: TerraformTaskV1@0
-  displayName: terraform init
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/New folder'
-    backendServiceArm: '$(subscription)'
-    backendAzureRmResourceGroupName: '$(resourceGroup)'
-    backendAzureRmStorageAccountName: '$(storageAccount)'
-    backendAzureRmContainerName: '$(container)'
-    backendAzureRmKey: '$(tfstateFile)'
 
-- task: TerraformTaskV1@0
-  displayName: terraform plan -out=tfplan
-  inputs:
-    provider: 'azurerm'
-    command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/New folder'
-    environmentServiceNameAzureRM: 'test-devops'
 
-- task: TerraformTaskV4@4
-  inputs:
-    provider: 'azurerm'
-    command: 'apply'
-    environmentServiceNameAzureRM: 'test-devops'
+- task: TerraformTaskV2@2
+ inputs:
+ provider: 'azurerm'
+ command: 'plan'
+ environmentServiceNameAzureRM: 'Azure trail'
 
-- task: PowerShell@2
-  displayName: detect any terraform change
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Write-Host "LASTEXITCODE : $LASTEXITCODE"
-      $plan = $(terraform show -json tfplan | ConvertFrom-Json)
-      $actions = $plan.resource_changes.change.actions
-      Write-Host "Terraform actions : $actions"
-      if (($actions -contains 'create') -or ($actions -contains 'delete') -or ($actions -contains 'update'))
-      {
-        Write-Host "Terraform will perform the following actions : $actions"
-        Write-Host "##vso[task.setvariable variable=anyTfChanges;]true"
-      }
-      else
-      {
-        Write-Host "There is no change detected in Terraform tfplan file"
-      }
-    workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
-- task: TerraformTaskV1@0
-  displayName: terraform apply tfplan
-  condition: eq(variables.anyTfChanges, true)
-  inputs:
-    provider: 'azurerm'
-    command: 'apply'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
-    commandOptions: 'tfplan'
-    environmentServiceNameAzureRM: '$(subscription)'
+
+
+- task: TerraformTaskV2@2
+ inputs:
+ provider: 'azurerm'
+ command: 'apply'
+ environmentServiceNameAzureRM: 'Azure trail'
