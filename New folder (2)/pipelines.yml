@@ -12,19 +12,18 @@ steps:
  inputs:
  provider: 'azurerm'
  command: 'init'
- backendServiceArm: 'Azure trail'
+ backendServiceArm: 'test-dev'
  backendAzureRmResourceGroupName: 'KE-DevOps-LandingZone'
  backendAzureRmStorageAccountName: 'testwesteurope123'
  backendAzureRmContainerName: 'test-dev'
  backendAzureRmKey: '77Q4LUB5o9wRdbPYDt+0kGZP+L8Sj9E/FNXg7lZBQS5z3mLod5cyan4wA19CR1SmlqIRUFQfhuQrPVaGzNhjGw=='
 
 
-
 - task: TerraformTaskV2@2
  inputs:
  provider: 'azurerm'
  command: 'plan'
- environmentServiceNameAzureRM: 'Azure trail'
+ environmentServiceNameAzureRM: 'test-dev'
 
 
 
@@ -32,4 +31,4 @@ steps:
  inputs:
  provider: 'azurerm'
  command: 'apply'
- environmentServiceNameAzureRM: 'Azure trail'
+ environmentServiceNameAzureRM: 'test-dev'
