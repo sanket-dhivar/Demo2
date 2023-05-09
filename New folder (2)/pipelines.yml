@@ -1,7 +1,7 @@
 trigger:
  branches:
  include:
- - master
+ - main
 
 steps:
 - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0

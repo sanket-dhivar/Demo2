@@ -1,3 +1,12 @@
+terraform {
+ backend "azurerm" {
+ resource_group_name = "KE-DevOps-LandingZone"
+ storage_account_name = "testwesteurope123"
+ container_name = "vtest-dev"
+ key = "RgvUgw78ISrE3tzFSvPRqmtfUEfbnR7d6nRXnIhgw6GbEK92616z93NkyL9OcHxqWIbrSzGNZoda+ASthYh2KQ=="
+ }
+}
+
 provider "azurerm"{
     features {
     }
