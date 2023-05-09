@@ -13,7 +13,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/New folder'
+    workingDirectory: '$(System.DefaultWorkingDirectory)\New folder'
     backendServiceArm: 'test-devops'
     backendAzureRmResourceGroupName: 'KE-DevOps-LandingZone'
     backendAzureRmStorageAccountName: 'testwesteurope123'
