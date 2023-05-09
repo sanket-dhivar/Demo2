@@ -8,22 +8,23 @@ steps:
  # inputs:
  #terraformVersion: '1.4.6' 
 
-- task: TerraformTaskV2@2
- inputs:
- provider: 'azurerm'
- command: 'init'
- backendServiceArm: 'test-dev'
- backendAzureRmResourceGroupName: 'KE-DevOps-LandingZone'
- backendAzureRmStorageAccountName: 'testwesteurope123'
- backendAzureRmContainerName: 'test-dev'
- backendAzureRmKey: '77Q4LUB5o9wRdbPYDt+0kGZP+L8Sj9E/FNXg7lZBQS5z3mLod5cyan4wA19CR1SmlqIRUFQfhuQrPVaGzNhjGw=='
 
+ 
+- task: TerraformTaskV2@2
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'test-devops'
+    backendAzureRmResourceGroupName: 'KE-DevOps-LandingZone'
+    backendAzureRmStorageAccountName: 'testwesteurope123'
+    backendAzureRmContainerName: 'test-dev'
+    backendAzureRmKey: '77Q4LUB5o9wRdbPYDt+0kGZP+L8Sj9E/FNXg7lZBQS5z3mLod5cyan4wA19CR1SmlqIRUFQfhuQrPVaGzNhjGw==''
 
 - task: TerraformTaskV2@2
  inputs:
  provider: 'azurerm'
  command: 'plan'
- environmentServiceNameAzureRM: 'test-dev'
+ environmentServiceNameAzureRM: 'test-devops'
 
 
 
@@ -31,4 +32,4 @@ steps:
  inputs:
  provider: 'azurerm'
  command: 'apply'
- environmentServiceNameAzureRM: 'test-dev'
+ environmentServiceNameAzureRM: 'test-devops'
